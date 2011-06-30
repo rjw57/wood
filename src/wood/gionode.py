@@ -7,7 +7,7 @@ import gtk
 from node import Node
 
 class GioNode(Node):
-	def __init__(self, file, parent):
+	def __init__(self, file, parent = None):
 		Node.__init__(self, parent)
 		self.file_ = file
 		self.file_info_ = self.file_.query_info(','.join([
@@ -33,9 +33,12 @@ class GioNode(Node):
 
 	def has_children(self):
 		if self.file_info_.get_file_type() != gio.FILE_TYPE_DIRECTORY:
-			return 0
-
-		return self.children() is not None and len(self.children()) > 0
+			return False
+		elif self.children() is None:
+			return False
+		elif len(self.children()) == 0:
+			return False
+		return True
 
 	def children(self):
 		if self.file_info_.get_file_type() != gio.FILE_TYPE_DIRECTORY:

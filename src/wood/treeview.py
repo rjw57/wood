@@ -29,7 +29,11 @@ class TreeView(gtk.TreeView):
 	
 	def content_type_description_(self, column, cell, model, iter):
 		content_type = model.get(iter, 2)[0]
-		cell.set_property('text', gio.content_type_get_description(content_type))
+		if content_type == 'inode/directory':
+			description = ''
+		else:
+			description = gio.content_type_get_description(content_type)
+		cell.set_property('text', description)
 	
 	def row_activated_(self, treeview, path, column):
 		model = treeview.get_model()

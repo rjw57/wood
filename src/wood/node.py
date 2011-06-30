@@ -1,3 +1,4 @@
+import gio
 import weakref
 
 class Node(object):
@@ -9,21 +10,35 @@ class Node(object):
 			return self.parent_ref_()
 		return None
 
-	def show_file(self):
-		raise NotImplementedError
-
 	def name(self):
-		raise NotImplementedError
-
-	def icon(self):
-		raise NotImplementedError
-
-	def has_children(self):
 		raise NotImplementedError
 
 	def children(self):
 		raise NotImplementedError
 
-	def content_type(self):
-		raise NotImplementedError
+	def show_file(self):
+		pass
 
+	def has_children(self):
+		if self.children() is not None and len(self.children()) > 0:
+			return True
+		return False
+
+	def icon(self):
+		return gio.content_type_get_icon(self.content_type())
+
+	def content_type(self):
+		if self.has_children():
+			return 'inode/directory'
+		return gio.content_type_guess(self.name(), None, False)
+
+class ListNode(Node):
+	def __init__(self, parent, children, name = None):
+		self.children_ = children
+		self.name_ = name
+	
+	def children(self):
+		return self.children_
+
+	def name(self):
+		return self.name_
