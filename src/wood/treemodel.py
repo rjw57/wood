@@ -1,11 +1,12 @@
 import pygtk
 pygtk.require('2.0')
-import gtk
 
 import gio
+import gobject;
+import gtk
 
 class TreeModel(gtk.GenericTreeModel):
-	column_types_ = [ str, gio.Icon, str ]
+	column_types_ = [ str, gio.Icon, str, object ]
 
 	def __init__(self, root_node, *args, **kwargs):
 		gtk.GenericTreeModel.__init__(self, *args, **kwargs)
@@ -46,6 +47,8 @@ class TreeModel(gtk.GenericTreeModel):
 			return rowref.icon()
 		elif column == 2:
 			return rowref.content_type()
+		elif column == 3:
+			return rowref
 
 		raise IndexError('Invalid column index: %s' % (column,))
 

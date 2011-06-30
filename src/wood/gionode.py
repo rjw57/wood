@@ -1,4 +1,8 @@
+import pygtk
+pygtk.require('2.0')
+
 import gio
+import gtk
 
 from node import Node
 
@@ -14,6 +18,12 @@ class GioNode(Node):
 			gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
 		]))
 		self.children_ = None
+
+	def show_file(self):
+		try:
+			gtk.show_uri(None, self.file_.get_uri(), gtk.gdk.CURRENT_TIME)
+		except gio.Error as e:
+			print(e)
 
 	def name(self):
 		return self.file_info_.get_display_name()
