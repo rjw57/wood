@@ -24,18 +24,6 @@ class Application(object):
 		if len(sys.argv) > 1:
 			path = sys.argv[1]
 
-		file_root = GioNode(gio.File(path = path))
-		file_model = TreeModel(file_root)
-		file_view = TreeView(model=gtk.TreeModelSort(file_model))
-		file_scrolled_window = gtk.ScrolledWindow()
-		file_scrolled_window.add(file_view)
-
-		git_root = GitRepoNode(Repo(path))
-		git_model = TreeModel(git_root)
-		git_view = TreeView(model=gtk.TreeModelSort(git_model))
-		git_scrolled_window = gtk.ScrolledWindow()
-		git_scrolled_window.add(git_view)
-
 		notebook = gtk.Notebook()
 		notebook.set_tab_pos(gtk.POS_LEFT)
 
@@ -44,8 +32,19 @@ class Application(object):
 			widget.set_property('angle', 90)
 			return widget
 
+		file_root = GioNode(gio.File(path = path))
+		file_model = TreeModel(file_root)
+		file_view = TreeView(model=gtk.TreeModelSort(file_model))
+		file_scrolled_window = gtk.ScrolledWindow()
+		file_scrolled_window.add(file_view)
 		notebook.append_page(file_scrolled_window, label('filesystem'))
-		notebook.append_page(git_scrolled_window, label('git'))
+
+#		git_root = GitRepoNode(Repo(path))
+#		git_model = TreeModel(git_root)
+#		git_view = TreeView(model=gtk.TreeModelSort(git_model))
+#		git_scrolled_window = gtk.ScrolledWindow()
+#		git_scrolled_window.add(git_view)
+#		notebook.append_page(git_scrolled_window, label('git'))
 
 		self.window_.add(notebook)
 

@@ -16,6 +16,18 @@ class Node(object):
 	def children(self):
 		raise NotImplementedError
 
+	SEPARATOR = 'SEPARATOR'
+
+	def actions(self):
+		"""Return a sequence of (callable, label, gio.Icon) actions for
+		this node. Sequences may contain the special value Node.SEPARATOR to
+		indicate there should be a separator.
+
+		The icon may be None.
+		
+		"""
+		return ((self.show_file, 'Show', None), )
+
 	def show_file(self):
 		pass
 

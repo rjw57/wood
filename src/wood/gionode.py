@@ -19,6 +19,26 @@ class GioNode(Node):
 		]))
 		self.children_ = None
 
+	def actions(self):
+		actions = []
+
+		def app_info_to_action(action):
+			return (lambda: action.launch([self.file_]), 'Open with ' + action.get_name(), action.get_icon())
+
+		default = gio.app_info_get_default_for_type(self.content_type(), not self.file_.is_native())
+		actions.append(app_info_to_action(default))
+
+		all_app_infos = [ai for ai in gio.app_info_get_all_for_type(self.content_type()) if ai != default]
+
+		if len(all_app_infos) > 0:
+			actions.append(Node.SEPARATOR)
+			for ai in all_app_infos:
+				if not self.file_.is_native() and not ai.supports_uris():
+					continue
+				actions.append(app_info_to_action(ai))
+
+		return actions
+
 	def show_file(self):
 		try:
 			gtk.show_uri(None, self.file_.get_uri(), gtk.gdk.CURRENT_TIME)
