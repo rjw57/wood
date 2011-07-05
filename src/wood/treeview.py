@@ -20,6 +20,7 @@ class TreeView(gtk.TreeView):
 		tc.set_attributes(cell, text=0)
 		tc.set_attributes(icon_cell, gicon=1)
 		tc.set_sort_column_id(0)
+		tc.set_resizable(True)
 		self.append_column(tc)
 
 		cell = gtk.CellRendererText()
