@@ -25,11 +25,10 @@ class Application(object):
 			path = sys.argv[1]
 
 		notebook = gtk.Notebook()
-		notebook.set_tab_pos(gtk.POS_LEFT)
+		notebook.set_tab_pos(gtk.POS_BOTTOM)
 
 		def label(text):
 			widget = gtk.Label(text)
-			widget.set_property('angle', 90)
 			return widget
 
 		file_root = GioNode(gio.File(path = path))
