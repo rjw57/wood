@@ -5,6 +5,7 @@ import gio
 import gtk
 
 from node import Node, ListNode
+from gionode import GioNode
 
 class GitRepoNode(ListNode):
 	def __init__(self, repo, parent = None):
@@ -41,10 +42,10 @@ class GitIndexObjectNode(Node):
 	def children(self):
 		return None
 
-class GitBlobNode(GitIndexObjectNode):
+class GitBlobNode(GitIndexObjectNode, GioNode):
 	def __init__(self, *args, **kwargs):
 		GitIndexObjectNode.__init__(self, *args, **kwargs)
-
+		GioNode.__init__(self, gio.File(self.git_object_.abspath), **kwargs)
 
 class GitTreeNode(GitIndexObjectNode):
 	def __init__(self, *args, **kwargs):
